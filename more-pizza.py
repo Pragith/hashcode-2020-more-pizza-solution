@@ -49,7 +49,7 @@ for file in os.listdir('input'):
     print(f"Output: {output}")
 
     outputFile = open(f'output/{file.split(".")[0]}.out', 'w')
-    outputFile.write(f"{output['types']}\n{f' '.join([str(x) for x in output['result']])}")
+    outputFile.write(f"{len(output['result'])}\n{f' '.join([str(x) for x in output['result']])}")
     outputFile.close()
     
 
