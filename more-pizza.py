@@ -43,9 +43,9 @@ for file in os.listdir('input'):
     data = extract_data(inputFile)
     slices = 0
 
-    output = generate_combinations(data['slices'], data['max'])
-
     print(f'Input: {data}')
+    
+    output = generate_combinations(data['slices'], data['max'])    
     print(f"Output: {output}")
 
     outputFile = open(f'output/{file.split(".")[0]}.out', 'w')
