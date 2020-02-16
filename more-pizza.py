@@ -29,8 +29,6 @@ def generate_combinations(slices, maxSlices):
         for types in combos.keys():
             if types <= maxSlices:                
                 result.append({
-                    'types':types,
-                    'combo':combos[types],
                     'slices':slices,
                     'result':find_pos(slices, combos[types])
                 })
@@ -43,10 +41,11 @@ for file in os.listdir('input'):
     data = extract_data(inputFile)
     slices = 0
 
-    print(f'Input: {data}')
+    #print(f'Input: {data}')
     
+    print(f'Processing {inputFile}...')
     output = generate_combinations(data['slices'], data['max'])    
-    print(f"Output: {output}")
+    print(f'Complete!')
 
     outputFile = open(f'output/{file.split(".")[0]}.out', 'w')
     outputFile.write(f"{len(output['result'])}\n{f' '.join([str(x) for x in output['result']])}")
