@@ -1,7 +1,5 @@
 #%%
 import os
-import itertools
-from collections import defaultdict
 
 ## Functions
 def extract_data(file):
@@ -13,36 +11,47 @@ def extract_data(file):
         'slices':slices,
     }
 
-def find_pos(arr, vals):
-    result = []
-    for val in vals:
-        result.append(arr.index(val))
-    return result
-
 def generate_combinations(slices, maxSlices):
     result = []
-    for l in range(2,len(slices)+1):
-        totalSlices = list(itertools.combinations(slices, l))
-        totalTypes = list(map(sum, totalSlices))
-        combos = { totalTypes[i]:totalSlices[i] for i in range(len(totalTypes)) }
-        
-        for types in combos.keys():
-            if types <= maxSlices:                
-                result.append({
-                    'slices':slices,
-                    'result':find_pos(slices, combos[types])
-                })
+    i = len(slices) - 1
+    j = len(slices) - 1
+    flag1 = True
+    flag2 = True
+    score = 0
 
-    return result[-1]
+    while (i >= 0 & flag1):
+        tempI = []
+        j = i
+        Sum = 0
+        while (j >= 0 & flag2):
+            tempJ = slices[j]
+            if (Sum + tempJ) < maxSlices:
+                Sum += tempJ
+                tempI.append(j)
+            elif (Sum + tempJ) == maxSlices:
+                Sum += tempJ
+                tempI.append(j)
+                flag1 = False
+                flag2 = False
+            j -= 1
+        if score < Sum:
+            score = Sum
+            result = tempI
+        if len(result) == len(slices):
+            flag1 = False
+        i -= 1
+
+    result.reverse()
+    return {
+        'totalSlices':len(result),
+        'result':result
+    }
 
 ## Execution
 for file in os.listdir('input'):
     inputFile = f'input/{file}'
     data = extract_data(inputFile)
-    slices = 0
 
-    #print(f'Input: {data}')
-    
     print(f'Processing {inputFile}...')
     output = generate_combinations(data['slices'], data['max'])    
     print(f'Complete!')
@@ -51,6 +60,3 @@ for file in os.listdir('input'):
     outputFile.write(f"{len(output['result'])}\n{f' '.join([str(x) for x in output['result']])}")
     outputFile.close()
     
-
-
-# %%
